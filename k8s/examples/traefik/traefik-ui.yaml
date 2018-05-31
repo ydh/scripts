@@ -21,6 +21,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/whitelist-source-range: 10.10.100.1
 spec:
   tls:
   - secretName: traefik-ui-secret

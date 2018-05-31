@@ -7,7 +7,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     # 开启访问白名单可以ip,网段
-    traefik.ingress.kubernetes.io/whitelist-source-range: "10.200.1.1/32,10.100.1.0/24"
+    traefik.ingress.kubernetes.io/whitelist-source-range: 10.200.1.1/32,10.100.1.0/24
 spec:
   tls:
   - secretName:  kubernetes-dashboard-certs
