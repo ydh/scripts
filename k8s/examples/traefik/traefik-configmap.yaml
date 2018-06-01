@@ -11,12 +11,10 @@ data:
     [entryPoints]
       [entryPoints.http]
       address = ":80"
-      ProxyProtocol = true
       #[entryPoints.http.redirect]
       #entryPoint = "https"
       # Do not verify backend certificates (use https backends)
       InsecureSkipVerify = true
       [entryPoints.https]
       address = ":443"
-      ProxyProtocol = true
       [entryPoints.https.tls]
