@@ -68,3 +68,4 @@ spec:
       targetPort: 443
       nodePort: 32767
   type: NodePort
+  externalTrafficPolicy: Local
