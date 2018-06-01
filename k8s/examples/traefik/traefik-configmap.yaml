@@ -8,13 +8,14 @@ data:
   traefik.toml: |
     # traefik.toml
     defaultEntryPoints = ["http","https"]
+    InsecureSkipVerify = true
+    useXForwardedFor = true
     [entryPoints]
       [entryPoints.http]
       address = ":80"
       #[entryPoints.http.redirect]
       #entryPoint = "https"
       # Do not verify backend certificates (use https backends)
-      InsecureSkipVerify = true
       [entryPoints.https]
       address = ":443"
       [entryPoints.https.tls]
