@@ -53,6 +53,8 @@ apiVersion: v1
 metadata:
   name: traefik-ingress-service
   namespace: kube-system
+  annotations:
+    service.spec.externalTrafficPolicy: Local
 spec:
   selector:
     k8s-app: traefik-ingress-lb
@@ -68,4 +70,3 @@ spec:
       targetPort: 443
       nodePort: 32767
   type: NodePort
-  externalTrafficPolicy: Local
