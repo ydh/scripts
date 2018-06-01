@@ -25,6 +25,10 @@ spec:
     spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
+      volumes:
+      - name: config
+        configMap:
+          name: traefik-config
       containers:
       - image: traefik
         name: traefik-ingress-lb
@@ -35,10 +39,14 @@ spec:
           containerPort: 443
         - name: admin
           containerPort: 8080
+        volumeMounts:
+        - mountPath: "/config"
+          name: "config"
         args:
         - --api
         - --kubernetes
         - --logLevel=INFO
+        - --configFile=/config/traefik.toml
 ---
 kind: Service
 apiVersion: v1

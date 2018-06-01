@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -16,4 +17,5 @@ data:
       InsecureSkipVerify = true
       [entryPoints.https]
       address = ":443"
+      #开启tls证书入口点
       [entryPoints.https.tls]
