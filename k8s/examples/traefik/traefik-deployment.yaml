@@ -54,11 +54,10 @@ metadata:
   name: traefik-ingress-service
   namespace: kube-system
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
-#    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
-#    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: ' * '
+    service.beta.kubernetes.io/external-traffic: OnlyLocal
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: ' * '
 spec:
-  externalTrafficPolicy: Local
   selector:
     k8s-app: traefik-ingress-lb
   ports:
