@@ -54,6 +54,7 @@ metadata:
   name: traefik-ingress-service
   namespace: kube-system
 spec:
+  externalTrafficPolicy: Local
   selector:
     k8s-app: traefik-ingress-lb
   ports:
