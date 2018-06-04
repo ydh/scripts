@@ -12,9 +12,20 @@ data:
     [entryPoints]
       [entryPoints.http]
       address = ":80"
+      # Enable ProxyProtocol
+      [entryPoints.http.proxyProtocol]
+      trustedIPs = ["172.31.26.98", "172.31.15.7"]
+      # Enable Forwarded Headers
+      [entryPoints.http.forwardedHeaders]
+      trustedIPs = ["172.31.26.98", "172.31.15.7"]
       #[entryPoints.http.redirect]
       #entryPoint = "https"
       # Do not verify backend certificates (use https backends)
       [entryPoints.https]
       address = ":443"
       [entryPoints.https.tls]
+      [entryPoints.https.proxyProtocol]
+      trustedIPs = ["172.31.26.98", "172.31.15.7"]
+      # Enable Forwarded Headers
+      [entryPoints.https.forwardedHeaders]
+      trustedIPs = ["172.31.26.98", "172.31.15.7"]

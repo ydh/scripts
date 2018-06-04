@@ -14,7 +14,11 @@ if [[ ! -d "${CNI_PLUGIN_BIN}" ]]; then
     mkdir -p "${CNI_PLUGIN_BIN}"
 fi
 
-# 下载安装 kub
+
 curl -sSL -o "${CNI_PLUGIN_BIN}/calico" "${CNI_PLUGIN_CALICO_URL}"
 curl -sSL -o "${CNI_PLUGIN_BIN}/calico-ipam" "${CNI_PLUGIN_CALICO_IPAM_URL}"
+
+#下载其他cni组件
+wget https://github.com/containernetworking/plugins/releases/download/v0.7.1/cni-plugins-amd64-v0.7.1.tgz
+tar zxf cni-plugins-amd64-v0.7.1.tgz -C "${CNI_PLUGIN_BIN}"
 chmod 755 -R ${CNI_PLUGIN_BIN}/*
