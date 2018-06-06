@@ -532,8 +532,7 @@ kubectl -n kube-system create secret tls traefik-ui-secret --key=tls.key --cert=
 kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k8s/examples/traefik/traefik-ui.yaml
 ```
 
-
-# 部署Heapster
+# 部署Heapster (废弃)
 ```bash
 kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
 kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
@@ -541,17 +540,23 @@ kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/d
 kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
 ```
 
+# 部署metrics-server
+```bash
+git clone https://github.com/kubernetes-incubator/metrics-server
+cd metrics-server
+kubectl create -f deploy/1.8+/
+```
+
 # 部署Dashboard
 ```bash
-kubectl apply -f  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
+kubectl apply -f  https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
 
 # 生成kubernetes-dashboard  secret
 # 这里我是自签证，如果你有公有证书可以直接生成
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=k8s-dev.dwnews.com"
 kubectl -n kube-system create secret generic kubernetes-dashboard-certs --from-file=./
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml -n kube-system
-
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
 kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k8s/examples/addons/dashboard/k8s-dashboard-ui.yaml
 ```
