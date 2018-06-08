@@ -242,13 +242,6 @@ KUBELET_ARGS="  --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
                 --resolv-conf=/etc/resolv.conf \
                 --rotate-certificates"
 ```
-## 注意事项。
-当flannel部署完成并添加kubelet配置文件`--network-plugin=cni`参数后，kubctl apply 部署业务时，node节点 kubelet 会疯狂报错,这个原因是，缺少cni插件，kubelet无法找到插件就会报错。
-默认kubelet增加`--network-plugin=cni`选项后, 报错原因官方文档是这么说明的：
- `--cni-bin-dir string`
-`The full path of the directory in which to search for CNI plugin binaries. Default: /opt/cni/bin`
-如果你想把cni plugin放在其他位置，那么你需要在kubelet配置文件添加`--cni-bin-dir=/path/cni/bin`,并且执行下一步下载插件到此目录，否则kubelet找不到cni插件和calico交互就会疯狂报错
---network-plugin=cni指明了我们使用cni与位于实际CNI插件二进制网络插件--cni-bin-dir（默认/opt/cni/bin）和位于CNI插件配置--cni-conf-dir（默认/etc/cni/net.d）。
 
 ## node节点安装 cni plugins
 ```bash

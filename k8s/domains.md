@@ -22,5 +22,23 @@ spinnaker.dwnews.net
 
 
 问题：
-负载ELB 做4层和7层负载会出现 traefik白名单失效。X-Forwarded-* 传不过来真是客户ip头。
+
+负载ELB 做4层和7层负载会出现 traefik白名单失效。X-Forwarded-* 无法传递客户ip头。
+（proxyProtocol forwardedHeaders）
+
 master节点解析node节点需要些hosts文件。
+
+flannel网络组件host-gw模式在aws调试不通。问题未找到
+
+dashboard 安全模板部署完成后无法使用，因无公网证书，不确定最终原因； http模板无问题。
+
+资源限制需要测试
+
+运维层和研发层协调调度问题
+
+微服务架构需要了解
+
+微服务管理框架service mesh——Istio 可以作为ingress。但是局限性比较大
+微服务管理框架service mesh——Linkerd
+
+监控prometheus & zabbix 存储s3 （直接在k8s集群上运行，还是独立出来是否需要监控非容器主机）
