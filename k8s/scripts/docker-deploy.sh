@@ -17,7 +17,7 @@ yum-config-manager \
     https://download.docker.com/linux/centos/docker-ce.repo
 
 #安装docker-ce
-yum install -y docker-ce
+yum install -y docker-ce-18.03.1.ce-1.el7.centos
 
 #配置docker守护进程
 cat <<EOF > /etc/systemd/system/docker.service
