@@ -54,6 +54,7 @@ metadata:
   name: traefik-ingress-service
   namespace: kube-system
 spec:
+  # this setting is t make sure the source IP address is preserved.
   externalTrafficPolicy: Local
   selector:
     k8s-app: traefik-ingress-lb

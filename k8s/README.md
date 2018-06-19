@@ -154,25 +154,28 @@ node-3    Ready     k8s-node   1m        v1.10.2
 ## kubectl config文件
 部署完成后，kubectl默认连接的是本机apiserver 8080端口进行管理的
 我们这里需要配置集群管理配置文件
-把生成的config文件copy到所有master主机的 ~/.kube/下 权限为600
+把生成的admin.config文件copy并重命名到所有master主机 ~/.kube/config 权限为600
 ```bash
 export KUBE_APISERVER="https://internal-k8s-apiserver-463791052.us-west-1.elb.amazonaws.com:6443"
 # 设置集群参数
 kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/pki/ca.pem \
   --embed-certs=true \
-  --server=${KUBE_APISERVER}
+  --server=${KUBE_APISERVER} \
+  --kubeconfig=admin.config
 # 设置客户端认证参数
 kubectl config set-credentials admin \
   --client-certificate=/etc/kubernetes/pki/admin.pem \
+  --client-key=/etc/kubernetes/pki/admin-key.pem \
   --embed-certs=true \
-  --client-key=/etc/kubernetes/pki/admin-key.pem
+  --kubeconfig=admin.config
 # 设置上下文参数
 kubectl config set-context kubernetes \
   --cluster=kubernetes \
-  --user=admin
+  --user=admin \
+  --kubeconfig=admin.config
 # 设置默认上下文
-kubectl config use-context kubernetes
+kubectl config use-context kubernetes --kubeconfig=admin.config
 ```
 
 # 部署calico
