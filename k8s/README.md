@@ -511,7 +511,7 @@ EOF
 kubectl apply -f dns-horizontal-autoscaler.yaml
 ```
 
-# 部署ingress-nginx负载均衡器
+# 部署ingress负载均衡器
 参考https://github.com/DevOps-Alvin/scripts/tree/master/k8s/traefik
 注意修改traefik-ui.yaml的 域名和tls证书
 ```bash
@@ -537,10 +537,26 @@ kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/d
 ```
 
 # 部署metrics-server
+部署之后会报错需要在apiserver配置文件中增加配置
 ```bash
-git clone https://github.com/kubernetes-incubator/metrics-server
+git clone https://github.com/kubernetes-incubator/metrics-server.git
 cd metrics-server
 kubectl create -f deploy/1.8+/
+```
+
+# 配置apiserver
+参考：启用 Metrics Server
+https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/
+
+```bash
+--requestheader-client-ca-file=/etc/kubernetes/pki/ca.pem \\
+--proxy-client-cert-file=/etc/kubernetes/pki/kube-proxy.pem \\
+--proxy-client-key-file=/etc/kubernetes/pki/kube-proxy-key.pem \\
+--requestheader-allowed-names=aggregator \\
+--requestheader-extra-headers-prefix=X-Remote-Extra- \\
+--requestheader-group-headers=X-Remote-Group \\
+--requestheader-username-headers=X-Remote-User \\
+--enable-aggregator-routing=true \\
 ```
 
 # 部署Dashboard
