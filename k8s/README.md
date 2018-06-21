@@ -524,7 +524,6 @@ kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k
 #生成证书，
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=traefik-dev.dwnews.com"
 kubectl -n kube-system create secret tls traefik-ui-secret --key=tls.key --cert=tls.crt
-
 kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k8s/examples/traefik/traefik-ui.yaml
 ```
 
@@ -561,15 +560,14 @@ https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-lay
 
 # 部署Dashboard
 ```bash
+#非安全端口方式部署
 kubectl apply -f  https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/alternative/kubernetes-dashboard.yaml
 
-# 生成kubernetes-dashboard  secret
-# 这里我是自签证，如果你有公有证书可以直接生成
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=k8s-dev.dwnews.com"
-kubectl -n kube-system create secret generic kubernetes-dashboard-certs --from-file=./
 
+#安全端口方式部署（推荐）
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
+#用此方式部署，traefik-ingress模板里证书必须是公网可认证的否则无法访问，报404错误
 kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k8s/examples/addons/dashboard/k8s-dashboard-ui.yaml
 ```
 

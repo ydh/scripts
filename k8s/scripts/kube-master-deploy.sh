@@ -186,14 +186,6 @@ KUBE_API_ARGS=" --anonymous-auth=false \\
                 --service-node-port-range=30000-32767 \\
                 --service-account-key-file=/etc/kubernetes/pki/ca-key.pem \\
                 --storage-backend=etcd3 \\
-                --requestheader-client-ca-file=/etc/kubernetes/pki/ca.pem \\
-                --proxy-client-cert-file=/etc/kubernetes/pki/kube-proxy.pem \\
-                --proxy-client-key-file=/etc/kubernetes/pki/kube-proxy-key.pem \\
-                --requestheader-allowed-names=aggregator \\
-                --requestheader-extra-headers-prefix=X-Remote-Extra- \\
-                --requestheader-group-headers=X-Remote-Group \\
-                --requestheader-username-headers=X-Remote-User \\
-                --enable-aggregator-routing=true \\
                 --enable-swagger-ui=true"
 EOF
 
