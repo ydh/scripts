@@ -178,7 +178,7 @@ KUBE_API_ARGS=" --anonymous-auth=false \\
                 --etcd-count-metric-poll-period=1m0s \\
                 --event-ttl=48h0m0s \\
                 --kubelet-https=true \\
-                --kubelet-timeout=3s \\
+                --kubelet-timeout=5s \\
                 --log-flush-frequency=5s \\
                 --token-auth-file=/etc/kubernetes/token.csv \\
                 --tls-cert-file=/etc/kubernetes/pki/kube-apiserver.pem \\
@@ -206,13 +206,9 @@ KUBE_CONTROLLER_MANAGER_ARGS="  --bind-address=0.0.0.0 \\
                                 --cluster-signing-cert-file=/etc/kubernetes/pki/ca.pem \\
                                 --cluster-signing-key-file=/etc/kubernetes/pki/ca-key.pem \\
                                 --controllers=*,bootstrapsigner,tokencleaner \\
-                                --deployment-controller-sync-period=10s \\
+                                --deployment-controller-sync-period=30s \\
                                 --experimental-cluster-signing-duration=86700h0m0s \\
                                 --leader-elect=true \\
-                                --node-monitor-grace-period=40s \\
-                                --node-monitor-period=5s \\
-                                --pod-eviction-timeout=5m0s \\
-                                --terminated-pod-gc-threshold=50 \\
                                 --root-ca-file=/etc/kubernetes/pki/ca.pem \\
                                 --service-account-private-key-file=/etc/kubernetes/pki/ca-key.pem \\
                                 --feature-gates=RotateKubeletServerCertificate=true"

@@ -511,6 +511,13 @@ EOF
 kubectl apply -f dns-horizontal-autoscaler.yaml
 ```
 
+# 生成ingress certs
+```bash
+#生成证书，最好使用公网签发证书，否则有些功能会出现错误
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=traefik-dev.dwnews.com"
+kubectl -n kube-system create secret tls traefik-ui-secret --key=tls.key --cert=tls.crt
+```
+
 # 部署ingress负载均衡器
 参考https://github.com/DevOps-Alvin/scripts/tree/master/k8s/traefik
 注意修改traefik-ui.yaml的 域名和tls证书
@@ -521,41 +528,16 @@ kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k
 
 kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k8s/examples/traefik/traefik-deployment.yaml
 
-#生成证书，
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=traefik-dev.dwnews.com"
-kubectl -n kube-system create secret tls traefik-ui-secret --key=tls.key --cert=tls.crt
 kubectl apply -f https://raw.githubusercontent.com/DevOps-Alvin/scripts/master/k8s/examples/traefik/traefik-ui.yaml
 ```
 
-# 部署Heapster (废弃)
+# 部署Heapster
+官方已经废弃，但是替代方案metrics-server还未成熟，最重要的是整合度不好，观察阶段，后续稳定做迭代
 ```bash
-kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
-kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
-kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
-kubectl create -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
-```
-
-# 部署metrics-server
-部署之后会报错需要在apiserver配置文件中增加配置
-```bash
-git clone https://github.com/kubernetes-incubator/metrics-server.git
-cd metrics-server
-kubectl create -f deploy/1.8+/
-```
-
-# 配置apiserver
-参考：启用 Metrics Server
-https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/
-
-```bash
---requestheader-client-ca-file=/etc/kubernetes/pki/ca.pem \\
---proxy-client-cert-file=/etc/kubernetes/pki/kube-proxy.pem \\
---proxy-client-key-file=/etc/kubernetes/pki/kube-proxy-key.pem \\
---requestheader-allowed-names=aggregator \\
---requestheader-extra-headers-prefix=X-Remote-Extra- \\
---requestheader-group-headers=X-Remote-Group \\
---requestheader-username-headers=X-Remote-User \\
---enable-aggregator-routing=true \\
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/influxdb.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/heapster.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/influxdb/grafana.yaml
 ```
 
 # 部署Dashboard
@@ -578,4 +560,20 @@ serviceaccount "dashboard-admin" created
 clusterrolebinding.rbac.authorization.k8s.io "dashboard-admin" created
 token:
 .........略
+```
+
+# 部署EFK日志插件
+```bash
+#给node节点打标签
+$ kubectl label nodes node-1 beta.kubernetes.io/fluentd-ds-ready=true
+node "node-1" labeled
+```
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/es-statefulset.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/es-service.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/fluentd-es-configmap.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/fluentd-es-ds.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/kibana-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/kibana-service.yaml
 ```
