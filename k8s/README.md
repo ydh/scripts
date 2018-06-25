@@ -400,11 +400,11 @@ pod/coredns-78f6d8759f-s8br8                   1/1       Running   0          22
 
 ## 部署dns自动扩容
 - dns-horizontal-autoscaler.yaml
+```bash
 wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns-horizontal-autoscaler/dns-horizontal-autoscaler.yaml
 
 修改模板中`- --target={{.Target}}`为`- --target=Deployment/coredns`
 kubectl apply -f dns-horizontal-autoscaler.yaml
-```
 ```
 
 # 生成ingress certs
