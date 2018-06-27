@@ -13,7 +13,7 @@ ansible -i ./k8s/hosts.ini kube-node -m script -a "./k8s/scripts/docker-deploy.s
 ```
 
 # 集群所需证书与kubeconfig文件
-## 在ansible节点执行`make-etcd-cert.sh`,`make-kube-cert.sh`,`make-kube-conf.sh`
+f
 ```bash
 #注意修改脚本文件中的etcd主机的ip
 sh ./k8s/scripts/make-etcd-cert.sh
@@ -472,4 +472,10 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/fluentd-es-ds.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/kibana-deployment.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/fluentd-elasticsearch/kibana-service.yaml
+```
+
+# 部署Prometheus Operator监控
+```bash
+#参考https://github.com/coreos/prometheus-operator
+
 ```
