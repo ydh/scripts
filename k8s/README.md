@@ -356,6 +356,26 @@ Commercial support is available at
 </html>
 ```
 
+# 配置Conntrack
+Linux系统上的一个常见问题是conntrack表中的空间不足，这可能会导致较差的iptables性能。如果您在给定主机上运行大量工作负载，或者您的工作负载创建大量TCP连接或双向UDP流，则会发生这种情况。
+
+为避免这种情况成为问题，我们建议增加conntrack表大小。为此，请运行以下命令：
+```bash
+sysctl -w net.netfilter.nf_conntrack_max=1000000
+echo "net.netfilter.nf_conntrack_max=1000000" >> /etc/sysctl.conf
+```
+# 安装calicoctl
+```bash
+#在所有master节点
+curl -O -L https://github.com/projectcalico/calicoctl/releases/download/v3.1.3/calicoctl
+cp calicoctl /usr/local/bin && chmod 755 /usr/local/bin/calicoctl
+
+#查看calico ip分配等信息
+#参考https://docs.projectcalico.org/v3.1/usage/changing-ip-pools
+#参考https://docs.projectcalico.org/v3.1/usage/
+ETCD_ENDPOINTS=https://172.31.25.244:2379,master-2=https://172.31.29.234:2379,master-3=https://172.31.21.119:2379 ETCD_KEY_FILE=/etc/kubernetes/pki/etcd/etcd-key.pem ETCD_CERT_FILE=/etc/kubernetes/pki/etcd/etcd.pem ETCD_CA_CERT_FILE=/etc/kubernetes/pki/etcd/ca.pem calicoctl get ippool -o wide
+```
+
 # 部署coredns(在任意master节点)
 ## 下载coredns yaml模板
 参考https://github.com/coredns/deployment/tree/master/kubernetes
