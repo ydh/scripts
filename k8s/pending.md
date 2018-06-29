@@ -21,3 +21,10 @@ https://www.yangcs.net/posts/api-aggregation/
 --requestheader-username-headers=X-Remote-User \\
 --enable-aggregator-routing=true \\
 ```
+
+# 部署EFK
+所需镜像
+docker.elastic.co/kibana/kibana-oss:6.3.0
+docker.elastic.co/elasticsearch/elasticsearch-oss:6.3.0
+Fluentd
+https://github.com/fluent/fluentd-kubernetes-daemonset/blob/master/fluentd-daemonset-elasticsearch.yaml
