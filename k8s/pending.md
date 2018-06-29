@@ -1,14 +1,15 @@
 # 部署metrics-server 替代heapster
 部署之后会报错需要在apiserver配置文件中增加配置
 ```bash
-git clone https://github.com/kubernetes-incubator/metrics-server.git
-cd metrics-server
-kubectl create -f deploy/1.8+/
+参考：
+https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/metrics-server
 ```
 
 # 配置apiserver
 参考：启用 Metrics Server
 https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/
+
+https://www.yangcs.net/posts/api-aggregation/
 
 ```bash
 --requestheader-client-ca-file=/etc/kubernetes/pki/ca.pem \\

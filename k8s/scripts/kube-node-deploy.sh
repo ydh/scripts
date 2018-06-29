@@ -119,7 +119,7 @@ KUBELET_ARGS="  --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \\
                 --cert-dir=/etc/kubernetes/pki \\
                 --cgroup-driver=cgroupfs \\
                 --cluster-dns=10.254.0.2 \\
-                --cluster-domain=cluster.local. \\
+                --cluster-domain=cluster.local \\
                 --fail-swap-on=false \\
                 --hairpin-mode promiscuous-bridge \\
                 --feature-gates=RotateKubeletClientCertificate=true,RotateKubeletServerCertificate=true \\

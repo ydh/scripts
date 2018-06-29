@@ -25,6 +25,11 @@ net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl -p /etc/sysctl.d/k8s.conf
 
+# calico网络组件需要调整此参数
+#参考https://docs.projectcalico.org/v3.1/usage/configuration/conntrack
+sysctl -w net.netfilter.nf_conntrack_max=1000000
+echo "net.netfilter.nf_conntrack_max=1000000" >> /etc/sysctl.conf
+
 # 加载ipvs模块，kube-proxy 启用了ipvs模式 如果不满足这些要求，Kube-proxy将回退到IPTABLES模式。
 # 参考https://github.com/kubernetes/kubernetes/tree/master/pkg/proxy/ipvs#when-ipvs-falls-back-to-iptables
 cat <<EOF > /etc/sysconfig/modules/ipvs.modules
