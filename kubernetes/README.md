@@ -1,19 +1,17 @@
-# 脚本与文档逐步完善中……
-**PS:请不要吐槽我的脚本和文档垃圾，能力有限，就只能写成这样了。**
-
-# system config
+# 配置ansible 密钥
+修改serverip.txt中主机ip列表
+在ansible主机执行如下脚本
 ```bash
-#集群所有节点system配置
-ansible -i ./k8s/hosts.ini k8s-cluster -m script -a "./k8s/scripts/system.sh"
+cd ./k8s/scripts/ansible && bash auto_issue_SSHpubkey.sh
 ```
 
-# docker deploy
+# 安装docker与系统调优
 ```bash
-ansible -i ./k8s/hosts.ini kube-node -m script -a "./k8s/scripts/docker-deploy.sh"
+#集群所有节点system配置
+ansible -i ./k8s/hosts.ini k8s-cluster -m script -a "./k8s/scripts/system-docker.sh"
 ```
 
 # 集群所需证书与kubeconfig文件
-f
 ```bash
 #注意修改脚本文件中的etcd主机的ip
 sh ./k8s/scripts/make-etcd-cert.sh
@@ -87,7 +85,13 @@ ansible -i ./k8s/hosts.ini kube-master -m shell -a "kubectl get componentstatuse
 ansible -i ./k8s/hosts.ini kube-node -m script -a "./k8s/scripts/kube-node-deploy.sh"
 ```
 
-## 在 aws 创建私有ELB反向代理master节点的6443端口
+## nginx-proxy
+在启动 kubelet、kube-proxy 服务之前，需要在本地启动 nginx 来 tcp 负载均衡 apiserver 6443 端口，nginx-proxy 使用 docker + systemd 启动，配置如下
+
+注意: 对于在 master 节点启动 kubelet 来说，不需要 nginx 做负载均衡；可以跳过此步骤，并修改 kubelet.kubeconfig、kube-proxy.kubeconfig 中的 apiserver 地址为当前 master ip 6443 端口即可
+```bash
+ansible -i ./k8s/hosts.ini kube-master -m copy -a "src=./examples/file/config/nginx.conf dest=/etc/nginx"
+```
 
 ## TLS bootstrapping （手动在任意master节点执行  ）
 创建好 ELB 后不要忘记为 TLS Bootstrap 创建相应的 RBAC 规则，这些规则能实现证自动签署 TLS Bootstrap 发出的 CSR 请求，从而实现证书轮换(创建一次即可)；参考：https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/

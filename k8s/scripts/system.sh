@@ -44,6 +44,5 @@ done
 EOF
 chmod 750 /etc/sysconfig/modules/ipvs.modules && bash /etc/sysconfig/modules/ipvs.modules && lsmod | grep ip_vs
 
-
 # 集群配置文件与证书目录
 mkdir -p /etc/kubernetes/pki/etcd
