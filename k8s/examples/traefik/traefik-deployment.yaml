@@ -63,10 +63,10 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 32766
+      nodePort: 34999
     - name: https
       protocol: TCP
       port: 443
       targetPort: 443
-      nodePort: 32767
+      nodePort: 35000
   type: NodePort

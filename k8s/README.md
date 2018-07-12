@@ -356,17 +356,6 @@ Commercial support is available at
 </html>
 ```
 
-# 配置Conntrack
-此项已经增加到system.sh优化脚本中，因此此步只做了解
-Linux系统上的一个常见问题是conntrack表中的空间不足，这可能会导致较差的iptables性能。如果您在给定主机上运行大量工作负载，或者您的工作负载创建大量TCP连接或双向UDP流，则会发生这种情况。
-
-为避免这种情况成为问题，我们建议增加conntrack表大小。为此，请运行以下命令：
-```bash
-#参考https://docs.projectcalico.org/v3.1/usage/configuration/conntrack
-sysctl -w net.netfilter.nf_conntrack_max=1000000
-echo "net.netfilter.nf_conntrack_max=1000000" >> /etc/sysctl.conf
-```
-
 # 安装calicoctl
 ```bash
 #在所有master节点
@@ -384,6 +373,18 @@ ETCD_ENDPOINTS=https://172.31.25.244:2379,master-2=https://172.31.29.234:2379,ma
 通过以下网址了解更多信息：https//github.com/kubernetes/node-problem-detector
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/node-problem-detector/npd.yaml
+```
+
+# 部署 metrics-server
+```bash
+mkdir -p metrics-server
+cd metrics-server
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/metrics-server/auth-delegator.yaml
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/metrics-server/auth-reader.yaml
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/metrics-server/metrics-apiservice.yaml
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/metrics-server/metrics-server-deployment.yaml
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/metrics-server/metrics-server-service.yaml
+wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/metrics-server/resource-reader.yaml
 ```
 
 # 部署coredns(在任意master节点)
